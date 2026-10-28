@@ -1,0 +1,9 @@
+<div class="sidebar-title">Job Search Command Center</div>
+<nav class="nav flex-column" aria-label="JSCC">
+    <a class="nav-link {% if jscc_active == 'dashboard' %}active{% endif %}" href="{% url 'jscc-dashboard' %}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link {% if jscc_active == 'application' %}active{% endif %}" href="{% url 'jscc-application-list' %}"><i class="bi bi-briefcase"></i> Applications</a>
+    <a class="nav-link {% if jscc_active == 'roadmap' %}active{% endif %}" href="{% url 'jscc-roadmap-list' %}"><i class="bi bi-signpost-split"></i> Roadmap</a>
+    <a class="nav-link {% if jscc_active == 'checklist' %}active{% endif %}" href="{% url 'jscc-checklist' %}"><i class="bi bi-check2-square"></i> Checklist</a>
+    <a class="nav-link {% if jscc_active == 'contact' %}active{% endif %}" href="{% url 'jscc-contact-list' %}"><i class="bi bi-people"></i> Contacts</a>
+    <a class="nav-link {% if jscc_active == 'settings' %}active{% endif %}" href="{% url 'jscc-settings' %}"><i class="bi bi-gear"></i> Settings</a>
+</nav>

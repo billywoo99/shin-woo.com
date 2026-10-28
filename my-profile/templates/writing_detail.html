@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - William Woo{% endblock %}
+{% block meta_description %}{{ post.excerpt|default:post.title }}{% endblock %}
+{% block content %}
+<p><a href="{% url 'writing-list' %}"><i class="bi bi-arrow-left"></i> All writing</a></p>
+<article>
+    <header class="page-header">
+        <div class="eyebrow">{{ post.published_at|date:"F j, Y" }}</div>
+        <h1 class="mb-2">{{ post.title }}</h1>
+        {% include "components/tag_list.html" with item=post %}
+    </header>
+    <div class="prose">{{ post.body|linebreaks }}</div>
+</article>
+{% endblock %}

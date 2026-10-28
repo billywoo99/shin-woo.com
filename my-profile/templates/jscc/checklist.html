@@ -1,0 +1,47 @@
+{% extends "base_jscc.html" %}
+{% block jscc_title %}Checklist{% endblock %}
+{% block content %}
+<div class="mb-4">
+    <h1 class="h2 mb-1">Checklist</h1>
+    <p class="text-muted mb-0">{{ done }} of {{ total }} done</p>
+</div>
+<div class="progress mb-4" role="progressbar" aria-label="Checklist progress" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: {{ percent }}%"></div></div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        {% for group in groups %}
+        <div class="card mb-3"><div class="card-body">
+            <h2 class="h5">{{ group.label }}</h2>
+            {% for item in group.items %}
+            <div class="check-row {% if item.is_done %}done{% endif %}">
+                <form method="post" action="{% url 'jscc-checklist-toggle' item.pk %}">
+                    {% csrf_token %}
+                    <input type="checkbox" class="form-check-input" id="item{{ item.pk }}" {% if item.is_done %}checked{% endif %} onchange="this.form.submit()" aria-label="Mark done: {{ item.title }}">
+                </form>
+                <span class="check-title flex-grow-1">{{ item.title }}</span>
+                <form method="post" action="{% url 'jscc-checklist-delete' item.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-link text-danger p-0" aria-label="Delete {{ item.title }}"><i class="bi bi-x-lg"></i></button>
+                </form>
+            </div>
+            {% endfor %}
+        </div></div>
+        {% empty %}
+        <div class="card">
+            {% include "components/empty_state.html" with icon="check2-square" title="Your checklist is empty" text="Add your own tasks, or start from a ready-made job search checklist." %}
+            <form method="post" class="text-center pb-4">{% csrf_token %}<input type="hidden" name="action" value="seed"><button type="submit" class="btn btn-outline-primary">Add starter checklist</button></form>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-lg-4">
+        <div class="card"><div class="card-body">
+            <h2 class="h5 mb-3">Add a task</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% include "components/form_body.html" with form=form %}
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div></div>
+    </div>
+</div>
+{% endblock %}

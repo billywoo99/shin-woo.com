@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}About - William Woo{% endblock %}
+{% block content %}
+<div class="card p-4 mt-4 shadow-sm skills-card">
+    <div style="text-align: center;">
+        <h3 style="display: inline-block;">Welcome!</h3>
+    </div>
+    <p class="text-dark" style="font-size: larger">I am an accomplished IS Project Director and Senior Project Manager with over 20 years of experience in IT and software development. I specialize in leading complex enterprise application modernization and full-stack development initiatives, utilizing cloud technologies (AWS, Google Cloud) and Agile methodologies to deliver significant efficiency gains for major clients like Google, Delta, and Hertz. Moving forward, I aim to utilize my extensive experience to drive successful projects in the new AI era.</p>
+</div>
+
+<div class="card p-4 mt-4 shadow-sm skills-card">
+    <h5 class="card-title">Resource Links</h5>
+    <ul class="list-unstyled mb-0">
+        <li>
+            <a href="{{ SITE.linkedin }}" target="_blank" rel="noopener">
+                <i class="bi bi-linkedin me-2" aria-hidden="true"></i>
+                <span class="visually-hidden">LinkedIn:</span> LinkedIn Profile
+            </a>
+        </li>
+        <li>
+            <a href="{{ SITE.github }}" target="_blank" rel="noopener">
+                <i class="bi bi-github me-2" aria-hidden="true"></i>
+                <span class="visually-hidden">GitHub:</span> GitHub Profile
+            </a>
+        </li>
+        <li>
+            <a href="mailto:{{ SITE.email }}">
+                <i class="bi bi-envelope-fill me-2" aria-hidden="true"></i>
+                <span class="visually-hidden">Email:</span> Email Me
+            </a>
+        </li>
+        <li>
+            <a href="tel:{{ SITE.phone }}">
+                <i class="bi bi-telephone-fill me-2" aria-hidden="true"></i>
+                <span class="visually-hidden">Phone:</span> Call Me: {{ SITE.phone }}
+            </a>
+        </li>
+        <li>
+            <a href="{% static 'William_Woo.pdf' %}" target="_blank" download>
+                <i class="bi bi-file-earmark-pdf-fill me-2" aria-hidden="true"></i>
+                <span class="visually-hidden">Resume:</span> Download Resume (PDF)
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- Comment Form -->
+<div class="card p-4 mt-4 shadow-sm skills-card">
+    <div class="card-body">
+        <h5 class="card-title">Leave a Comment</h5>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}<div class="alert alert-danger small mt-2">{{ form.name.errors }}</div>{% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}<div class="alert alert-danger small mt-2">{{ form.email.errors }}</div>{% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.comment.id_for_label }}" class="form-label">Comment</label>
+                {{ form.comment }}
+                {% if form.comment.errors %}<div class="alert alert-danger small mt-2">{{ form.comment.errors }}</div>{% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Comment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

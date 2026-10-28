@@ -1,0 +1,9 @@
+{# Usage: {% include "components/post_card.html" with post=post %} #}
+<div class="card card-hover mb-3">
+    <div class="card-body">
+        <div class="small text-muted mb-1">{{ post.published_at|date:"M j, Y" }}{% if post.featured %} &middot; <i class="bi bi-pin-angle-fill"></i> Pinned{% endif %}</div>
+        <h3 class="h5 card-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}<p class="card-text">{{ post.excerpt }}</p>{% endif %}
+        {% include "components/tag_list.html" with item=post %}
+    </div>
+</div>

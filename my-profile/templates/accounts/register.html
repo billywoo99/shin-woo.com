@@ -1,0 +1,15 @@
+{% extends "base_account.html" %}
+{% block title %}Create account - William Woo{% endblock %}
+{% block content %}
+<h1 class="h4 mb-4">Create your account</h1>
+{% if registration_open %}
+<form method="post" novalidate>
+    {% csrf_token %}
+    {% include "components/form_body.html" with form=form %}
+    <button type="submit" class="btn btn-primary w-100">Create account</button>
+</form>
+{% else %}
+{% include "components/empty_state.html" with icon="lock" title="Registration is closed" text="Accounts are currently invitation-only." %}
+{% endif %}
+<p class="mt-3 mb-0 small text-center">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+{% endblock %}

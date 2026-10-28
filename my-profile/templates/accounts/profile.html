@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Your profile - William Woo{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="text-center mb-4">
+            <div class="avatar" aria-hidden="true">{{ user.get_username|slice:":1"|upper }}</div>
+            <h1 class="h3 mt-3 mb-0">{{ user.get_full_name|default:user.get_username }}</h1>
+            <p class="text-muted">{{ user.email|default:"No email on file" }}</p>
+        </div>
+
+        <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-edit" type="button" role="tab">Details</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-security" type="button" role="tab">Security</button></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tab-edit" role="tabpanel">
+                <div class="card"><div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% include "components/form_body.html" with form=form %}
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div></div>
+            </div>
+            <div class="tab-pane fade" id="tab-security" role="tabpanel">
+                <div class="card"><div class="card-body">
+                    <p class="mb-3">Member since {{ user.date_joined|date:"F j, Y" }}.</p>
+                    <a href="{% url 'password-change' %}" class="btn btn-outline-primary">Change password</a>
+                    <a href="{% url 'jscc-dashboard' %}" class="btn btn-outline-secondary">Go to JSCC</a>
+                </div></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

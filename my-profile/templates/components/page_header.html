@@ -1,0 +1,6 @@
+{# Usage: {% include "components/page_header.html" with eyebrow="Work" title="Projects" subtitle="..." %} #}
+<header class="page-header">
+    {% if eyebrow %}<div class="eyebrow">{{ eyebrow }}</div>{% endif %}
+    <h1 class="mb-2">{{ title }}</h1>
+    {% if subtitle %}<p class="mb-0">{{ subtitle }}</p>{% endif %}
+</header>

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Writing - William Woo{% endblock %}
+{% block content %}
+{% include "components/page_header.html" with eyebrow="Notes" title="Writing" subtitle="Thoughts on program management, cloud delivery and building things." %}
+
+{% if tags %}
+<div class="mb-4" aria-label="Filter by tag">
+    <a href="{% url 'writing-list' %}" class="tag-link {% if not active_tag %}active{% endif %}">All</a>
+    {% for tag in tags %}<a href="?tag={{ tag|urlencode }}" class="tag-link {% if tag == active_tag %}active{% endif %}">{{ tag }}</a>{% endfor %}
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-lg-8">
+        {% for post in posts %}
+            {% include "components/post_card.html" with post=post %}
+        {% empty %}
+            {% include "components/empty_state.html" with icon="pencil-square" title="Nothing published yet" text="New posts will appear here." %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

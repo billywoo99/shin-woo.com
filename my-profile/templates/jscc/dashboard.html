@@ -1,0 +1,86 @@
+{% extends "base_jscc.html" %}
+{% block jscc_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Welcome back{% if user.first_name %}, {{ user.first_name }}{% endif %}</h1>
+        <p class="text-muted mb-0">{{ today|date:"l, F j" }}</p>
+    </div>
+    <a href="{% url 'jscc-application-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add application</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">{% include "components/stat_card.html" with label="Total applications" value=total icon="briefcase" %}</div>
+    <div class="col-6 col-lg-3">{% include "components/stat_card.html" with label="In progress" value=active_count icon="hourglass-split" %}</div>
+    <div class="col-6 col-lg-3">{% include "components/stat_card.html" with label="Interviewing" value=interview_count icon="chat-dots" %}</div>
+    <div class="col-6 col-lg-3">{% include "components/stat_card.html" with label="Offers" value=offer_count icon="trophy" %}</div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card mb-4"><div class="card-body">
+            <h2 class="h5 mb-3">Pipeline</h2>
+            {% if total %}
+                {% for stage in pipeline %}
+                <div class="pipeline-row">
+                    <span>{{ stage.label }}</span>
+                    <div class="progress" role="progressbar" aria-label="{{ stage.label }}" aria-valuenow="{{ stage.percent }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: {{ stage.percent }}%"></div></div>
+                    <strong>{{ stage.count }}</strong>
+                </div>
+                {% endfor %}
+            {% else %}
+                {% include "components/empty_state.html" with icon="briefcase" title="No applications yet" text="Add your first application to see your pipeline." %}
+            {% endif %}
+        </div></div>
+
+        <div class="card"><div class="card-body">
+            <h2 class="h5 mb-3">Upcoming next steps</h2>
+            {% for app in upcoming %}
+            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                <div>
+                    <div class="fw-600">{{ app.next_step|default:"Next step" }}</div>
+                    <div class="small text-muted">{{ app.role_title }} at {{ app.company }}</div>
+                </div>
+                <span class="small">{{ app.next_step_date|date:"M j" }}</span>
+            </div>
+            {% empty %}
+            <p class="text-muted mb-0">Nothing scheduled. Set a next step date on an application.</p>
+            {% endfor %}
+        </div></div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card mb-4"><div class="card-body">
+            <h2 class="h5 mb-3">This week</h2>
+            <div class="d-flex justify-content-between small mb-1"><span>Applications sent</span><strong>{{ applied_this_week }} / {{ weekly_goal }}</strong></div>
+            <div class="progress mb-3" role="progressbar" aria-label="Weekly application goal" aria-valuenow="{{ weekly_percent }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: {{ weekly_percent }}%"></div></div>
+            <div class="d-flex justify-content-between small mb-1"><span>Checklist complete</span><strong>{{ checklist_done }} / {{ checklist_total }}</strong></div>
+            <div class="progress" role="progressbar" aria-label="Checklist progress" aria-valuenow="{{ checklist_percent }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: {{ checklist_percent }}%"></div></div>
+        </div></div>
+
+        <div class="card mb-4"><div class="card-body">
+            <h2 class="h5 mb-3">Follow-ups due</h2>
+            {% for contact in follow_ups %}
+            <div class="d-flex justify-content-between py-2 border-bottom">
+                <span>{{ contact.name }}{% if contact.company %} <span class="text-muted small">&middot; {{ contact.company }}</span>{% endif %}</span>
+                <span class="small {% if contact.follow_up_on < today %}overdue{% endif %}">{{ contact.follow_up_on|date:"M j" }}</span>
+            </div>
+            {% empty %}
+            <p class="text-muted mb-0">No follow-ups in the next 7 days.</p>
+            {% endfor %}
+        </div></div>
+
+        <div class="card"><div class="card-body">
+            <h2 class="h5 mb-3">Focus now</h2>
+            {% for item in now_items %}
+            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                <span>{{ item.title }}</span>
+                {% include "components/status_badge.html" with value=item.status label=item.get_status_display %}
+            </div>
+            {% empty %}
+            <p class="text-muted mb-0">Add roadmap items in the "Now" phase to see them here.</p>
+            {% endfor %}
+        </div></div>
+    </div>
+</div>
+{% endblock %}

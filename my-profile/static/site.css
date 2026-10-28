@@ -1,0 +1,232 @@
+/* =========================================================================
+   Portfolio design system  (Bootstrap 5 + these tokens)
+   1. Tokens   2. Base & typography   3. Layout   4. Components
+   5. Public pages   6. JSCC app shell   7. Accounts   8. Utilities
+   ========================================================================= */
+
+/* 1. TOKENS ------------------------------------------------------------- */
+:root {
+    /* Brand */
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-primary-soft: #eff6ff;
+    --color-primary-rgb: 37, 99, 235;
+
+    /* Neutrals */
+    --color-ink: #2d3748;
+    --color-ink-soft: #4a5568;
+    --color-muted: #6b7280;
+    --color-line: #e5e7eb;
+    --color-line-strong: #d1d5db;
+    --color-surface: #ffffff;
+    --color-bg: #f9fafb;
+
+    /* Status (used by badges, progress, pipeline) */
+    --color-success: #15803d;   --color-success-soft: #dcfce7;
+    --color-warning: #b45309;   --color-warning-soft: #fef3c7;
+    --color-danger: #b91c1c;    --color-danger-soft: #fee2e2;
+    --color-info: #0369a1;      --color-info-soft: #e0f2fe;
+    --color-neutral: #475569;   --color-neutral-soft: #f1f5f9;
+    --color-violet: #6d28d9;    --color-violet-soft: #ede9fe;
+
+    /* Typography */
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --text-xs: 0.75rem;  --text-sm: 0.875rem; --text-base: 1rem;
+    --text-lg: 1.125rem; --text-xl: 1.25rem;  --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem; --text-4xl: clamp(2rem, 4vw, 2.75rem);
+
+    /* Spacing (4px base) */
+    --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+    --space-5: 1.5rem;  --space-6: 2rem;   --space-7: 3rem;    --space-8: 4rem;
+
+    /* Shape & depth */
+    --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 4px 16px rgba(var(--color-primary-rgb), 0.12);
+
+    --sidebar-width: 15rem;
+}
+
+/* 2. BASE & TYPOGRAPHY --------------------------------------------------- */
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-bg); }
+h1, h2, h3, h4, h5, h6 { color: var(--color-ink); font-weight: 700; letter-spacing: -0.5px; }
+h1 { font-size: var(--text-4xl); }
+a { transition: all 0.2s ease; text-decoration: none; color: var(--color-primary); }
+a:hover { color: var(--color-primary-dark); }
+.text-muted { color: var(--color-muted) !important; }
+.lead { color: var(--color-ink-soft); }
+
+/* Section title: blue underline used on public pages */
+.section-title {
+    margin: var(--space-6) 0 var(--space-5);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 0.75rem;
+    display: inline-block;
+    font-size: var(--text-2xl);
+}
+
+/* Form controls */
+.form-control, .form-select {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-line-strong);
+    padding: 0.65rem 0.9rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    background-color: var(--color-surface);
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.15);
+}
+textarea.form-control { resize: vertical; min-height: 120px; }
+.form-label { font-weight: 600; font-size: var(--text-sm); }
+.form-check-input { width: 1.15em; height: 1.15em; padding: 0; box-shadow: none; }
+.form-check-input:checked { background-color: var(--color-primary); border-color: var(--color-primary); }
+.hp-field { position: absolute; left: -9999px; height: 0; overflow: hidden; }  /* spam honeypot */
+
+/* Buttons */
+.btn { border-radius: var(--radius-md); font-weight: 600; }
+.btn-primary {
+    --bs-btn-bg: var(--color-primary); --bs-btn-border-color: var(--color-primary);
+    --bs-btn-hover-bg: var(--color-primary-dark); --bs-btn-hover-border-color: var(--color-primary-dark);
+    --bs-btn-active-bg: var(--color-primary-dark);
+    box-shadow: 0 1px 3px rgba(var(--color-primary-rgb), 0.15);
+}
+.btn-outline-primary {
+    --bs-btn-color: var(--color-primary); --bs-btn-border-color: var(--color-primary);
+    --bs-btn-hover-bg: var(--color-primary); --bs-btn-hover-border-color: var(--color-primary);
+}
+
+/* 3. LAYOUT -------------------------------------------------------------- */
+.body-content {
+    padding: var(--space-6) var(--space-4);
+    background: var(--color-bg);
+    min-height: calc(100vh - 4rem);
+    color: var(--color-ink);
+}
+.site-footer { border-top: 1px solid var(--color-line); padding: var(--space-5) 0; color: var(--color-muted); font-size: var(--text-sm); }
+
+/* Navbar */
+.navbar.site-nav {
+    --bs-navbar-active-color: var(--color-primary);
+    background: var(--color-surface) !important;
+    border-bottom: 2px solid var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+.navbar-brand { font-weight: 700; color: var(--color-ink); }
+.site-nav .nav-link {
+    margin: 0.15rem;
+    border-radius: var(--radius-md);
+    padding: 0.4rem 0.85rem;
+    color: var(--color-primary);
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+.site-nav .nav-link:hover { background: var(--color-primary-soft); border-color: var(--color-primary); }
+.site-nav .nav-link.active {
+    background: var(--color-primary); color: #fff; font-weight: 600;
+    border-color: var(--color-primary); box-shadow: 0 1px 3px rgba(var(--color-primary-rgb), 0.15);
+}
+
+/* 4. COMPONENTS ---------------------------------------------------------- */
+.card { border: 1px solid var(--color-line); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; }
+.card.card-hover:hover, .experience-card:hover, .skills-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.experience-card, .skills-card { border-left: 5px solid var(--color-primary); background: var(--color-surface); transition: all 0.2s ease; }
+
+.page-header { margin-bottom: var(--space-6); }
+.page-header .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--text-xs); font-weight: 700; color: var(--color-primary); }
+.page-header p { color: var(--color-ink-soft); max-width: 42rem; }
+
+.profile-header {
+    background: var(--color-surface); color: var(--color-ink);
+    padding: 3rem 2rem; margin-bottom: var(--space-6);
+    border-radius: var(--radius-xl); box-shadow: var(--shadow-md);
+    border-bottom: 3px solid var(--color-primary);
+}
+.profile-header h1 { color: var(--color-primary); font-weight: 700; }
+.profile-header .lead { font-weight: 600; color: #666; }
+
+.tag, .tag-link {
+    display: inline-block; font-size: var(--text-xs); font-weight: 600;
+    padding: 0.2rem 0.6rem; border-radius: 999px;
+    background: var(--color-primary-soft); color: var(--color-primary);
+    border: 1px solid transparent; margin: 0 0.25rem 0.25rem 0;
+}
+a.tag-link:hover, .tag-link.active { background: var(--color-primary); color: #fff; }
+
+/* Status badges: .status-<value> */
+.status-badge { display: inline-block; font-size: var(--text-xs); font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; white-space: nowrap; }
+.status-wishlist, .status-withdrawn, .status-planned { background: var(--color-neutral-soft); color: var(--color-neutral); }
+.status-applied, .status-next { background: var(--color-info-soft); color: var(--color-info); }
+.status-screening, .status-in_progress, .status-now { background: var(--color-violet-soft); color: var(--color-violet); }
+.status-interview, .status-later { background: var(--color-warning-soft); color: var(--color-warning); }
+.status-offer, .status-done { background: var(--color-success-soft); color: var(--color-success); }
+.status-rejected { background: var(--color-danger-soft); color: var(--color-danger); }
+
+.stat-card .stat-value { font-size: var(--text-3xl); font-weight: 700; color: var(--color-ink); line-height: 1.1; }
+.stat-card .stat-label { font-size: var(--text-sm); color: var(--color-muted); }
+
+.progress { height: 0.6rem; border-radius: 999px; background: var(--color-line); }
+.progress-bar { background: var(--color-primary); }
+
+.empty-state { text-align: center; padding: var(--space-7) var(--space-4); color: var(--color-muted); }
+.empty-state i { font-size: 2.25rem; color: var(--color-line-strong); }
+
+.alert { border-radius: var(--radius-md); }
+
+/* 5. PUBLIC PAGES -------------------------------------------------------- */
+.timeline { border-left: 3px solid var(--color-line); padding-left: var(--space-5); margin-left: var(--space-2); }
+.timeline-item { position: relative; margin-bottom: var(--space-5); }
+.timeline-item::before {
+    content: ""; position: absolute; left: calc(-1 * var(--space-5) - 8px); top: 0.5rem;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--color-primary); border: 3px solid var(--color-bg);
+}
+.result-list { padding-left: 1.1rem; }
+.result-list li { margin-bottom: 0.25rem; }
+.case-section h2 { font-size: var(--text-xl); }
+.prose { max-width: 42rem; font-size: var(--text-lg); line-height: 1.75; }
+
+/* 6. JSCC APP SHELL ------------------------------------------------------ */
+.jscc-shell { display: flex; min-height: calc(100vh - 4rem); background: var(--color-bg); }
+.jscc-sidebar {
+    width: var(--sidebar-width); flex: 0 0 var(--sidebar-width);
+    background: var(--color-surface); border-right: 1px solid var(--color-line); padding: var(--space-5) var(--space-3);
+}
+.jscc-sidebar .sidebar-title { font-size: var(--text-xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); font-weight: 700; padding: 0 var(--space-3); margin-bottom: var(--space-2); }
+.jscc-sidebar .nav-link { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem var(--space-3); border-radius: var(--radius-md); color: var(--color-ink-soft); font-weight: 500; }
+.jscc-sidebar .nav-link:hover { background: var(--color-primary-soft); color: var(--color-primary); }
+.jscc-sidebar .nav-link.active { background: var(--color-primary); color: #fff; font-weight: 600; }
+.jscc-main { flex: 1 1 auto; min-width: 0; padding: var(--space-6) var(--space-5); }
+.jscc-topbar { display: none; }
+@media (max-width: 991.98px) {
+    .jscc-sidebar { display: none; }
+    .jscc-topbar { display: block; background: var(--color-surface); border-bottom: 1px solid var(--color-line); padding: 0.5rem var(--space-4); }
+    .jscc-main { padding: var(--space-5) var(--space-4); }
+}
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(15rem, 1fr); gap: var(--space-4); overflow-x: auto; padding-bottom: var(--space-3); }
+.board-column { background: var(--color-neutral-soft); border-radius: var(--radius-lg); padding: var(--space-3); }
+.board-column h3 { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.05em; display: flex; justify-content: space-between; }
+.board-card { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-md); padding: var(--space-3); margin-bottom: var(--space-3); box-shadow: var(--shadow-sm); }
+.pipeline-row { display: grid; grid-template-columns: 8rem 1fr 2rem; gap: var(--space-3); align-items: center; margin-bottom: var(--space-2); font-size: var(--text-sm); }
+.check-row { display: flex; align-items: center; gap: var(--space-3); padding: 0.5rem 0; border-bottom: 1px solid var(--color-line); }
+.check-row.done .check-title { text-decoration: line-through; color: var(--color-muted); }
+.check-row form { margin: 0; }
+.table > :not(caption) > * > * { vertical-align: middle; }
+
+/* 7. ACCOUNTS ------------------------------------------------------------ */
+.account-wrap { max-width: 28rem; margin: var(--space-7) auto; }
+.account-wrap .card { padding: var(--space-6); box-shadow: var(--shadow-md); }
+.account-wrap .brand { text-align: center; margin-bottom: var(--space-5); }
+.avatar { width: 4.5rem; height: 4.5rem; border-radius: 50%; background: var(--color-primary); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: var(--text-2xl); font-weight: 700; }
+
+/* 8. UTILITIES ----------------------------------------------------------- */
+.gap-2 { gap: .2rem !important; }
+.fw-600 { font-weight: 600; }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.overdue { color: var(--color-danger); font-weight: 600; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }

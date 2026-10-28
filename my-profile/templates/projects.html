@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Projects - William Woo{% endblock %}
+{% block content %}
+{% include "components/page_header.html" with eyebrow="Work" title="Projects" subtitle="Selected enterprise cloud, migration and CRM initiatives, with the results they delivered." %}
+
+{% if tags %}
+<div class="mb-4" aria-label="Filter by tag">
+    <a href="{% url 'projects' %}" class="tag-link {% if not active_tag %}active{% endif %}">All</a>
+    {% for tag in tags %}<a href="?tag={{ tag|urlencode }}" class="tag-link {% if tag == active_tag %}active{% endif %}">{{ tag }}</a>{% endfor %}
+</div>
+{% endif %}
+
+{% if projects %}
+<div class="row g-4">
+    {% for project in projects %}
+    <div class="col-md-6 col-lg-4">{% include "components/project_card.html" with project=project %}</div>
+    {% endfor %}
+</div>
+{% else %}
+{% include "components/empty_state.html" with icon="kanban" title="No projects to show" text="Add projects in the site admin and mark them as published." %}
+{% endif %}
+{% endblock %}

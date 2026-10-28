@@ -1,0 +1,30 @@
+{% extends "base_jscc.html" %}
+{% block jscc_title %}Settings{% endblock %}
+{% block content %}
+<h1 class="h2 mb-4">Settings</h1>
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card"><div class="card-body">
+            <h2 class="h5 mb-3">Job search goals</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% include "components/form_body.html" with form=form %}
+                <button type="submit" class="btn btn-primary">Save settings</button>
+            </form>
+        </div></div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card mb-4"><div class="card-body">
+            <h2 class="h5 mb-3">Account</h2>
+            <p class="small text-muted">Signed in as <strong>{{ user.get_username }}</strong>.</p>
+            <a href="{% url 'profile' %}" class="btn btn-outline-primary btn-sm">Profile</a>
+            <a href="{% url 'password-change' %}" class="btn btn-outline-primary btn-sm">Change password</a>
+        </div></div>
+        <div class="card"><div class="card-body">
+            <h2 class="h5 mb-3">Your data</h2>
+            <p class="small text-muted">Download all of your applications as a spreadsheet-friendly file.</p>
+            <a href="{% url 'jscc-application-export' %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-download"></i> Export applications (CSV)</a>
+        </div></div>
+    </div>
+</div>
+{% endblock %}

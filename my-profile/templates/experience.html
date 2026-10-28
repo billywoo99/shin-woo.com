@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Experience - William Woo{% endblock %}
+{% block content %}
+{% include "components/page_header.html" with eyebrow="Career" title="Experience" subtitle="Project and program leadership grounded in hands-on full stack and cloud development." %}
+
+<div class="row">
+    <div class="col-lg-8 mb-4">
+        <h2 class="section-title">Professional Experience</h2>
+        <div class="timeline">
+            <div class="timeline-item card experience-card p-3">
+                <h3 class="h5 mb-1">Senior Project & Product Manager</h3>
+                <h4 class="h6 text-muted mb-2">IBM</h4>
+                <p class="small text-end fst-italic mb-2">Aug 2015 &ndash; May 2025</p>
+                <p class="mb-0">Managed multi-million dollar initiatives and portfolios, leveraging deep technical skills in Full Stack development and Cloud environments (AWS/Google) to drive project success and stakeholder alignment.</p>
+            </div>
+            <div class="timeline-item card experience-card p-3">
+                <h3 class="h5 mb-1">Technical Lead</h3>
+                <h4 class="h6 text-muted mb-2">Boeing</h4>
+                <p class="small text-end fst-italic mb-2">Feb 2015 &ndash; Aug 2015</p>
+                <p class="mb-0">In a technical leadership role, contributed to solution design and foresaw technical risks in complex systems.</p>
+            </div>
+            <div class="timeline-item card experience-card p-3">
+                <h3 class="h5 mb-1">Sr. Consultant, Developer</h3>
+                <h4 class="h6 text-muted mb-2">Webfortis</h4>
+                <p class="small text-end fst-italic mb-2">Sep 2013 &ndash; Jan 2015</p>
+                <p class="mb-0">Hands-on role focused on consulting and development, utilizing deep technical background to deliver custom solutions.</p>
+            </div>
+        </div>
+        <p><a href="{% url 'projects' %}">See the projects behind these roles <i class="bi bi-arrow-right"></i></a></p>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card p-4 shadow-sm">
+            <h2 class="h4 mb-3 text-primary">Education</h2>
+            <p class="mb-0"><strong>San Francisco State University</strong></p>
+            <p class="text-muted mb-0">Bachelor of Science, Computer Science</p>
+            <p class="small fst-italic mb-3">05/2002 &ndash; 05/2004</p>
+            <p class="mb-0"><strong>San Jose State University</strong></p>
+            <p class="text-muted mb-0">Bachelor of Science, Mathematics</p>
+            <p class="small fst-italic mb-0">01/2000 &ndash; 05/2002</p>
+        </div>
+        <div class="card p-4 mt-4 shadow-sm">
+            <h2 class="h4 mb-3 text-primary">Focus areas</h2>
+            <div>
+                <span class="tag">Full Stack development</span>
+                <span class="tag">AWS</span>
+                <span class="tag">Google Cloud</span>
+                <span class="tag">ERP / CRM</span>
+                <span class="tag">Dynamics CRM</span>
+                <span class="tag">.NET (C#, JavaScript)</span>
+                <span class="tag">Agile / Scrum</span>
+                <span class="tag">Program &amp; portfolio management</span>
+                <span class="tag">Stakeholder alignment</span>
+                <span class="tag">Budget alignment</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

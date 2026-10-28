@@ -1,0 +1,73 @@
+{% extends "base_jscc.html" %}
+{% block jscc_title %}Applications{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Applications</h1>
+        <p class="text-muted mb-0">Track every role from wishlist to offer.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'jscc-application-export' %}" class="btn btn-outline-primary"><i class="bi bi-download"></i> Export CSV</a>
+        <a href="{% url 'jscc-application-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add application</a>
+    </div>
+</div>
+
+<form method="get" class="row g-2 mb-4 align-items-center">
+    <input type="hidden" name="view" value="{{ view }}">
+    <div class="col-sm-5 col-lg-4"><input type="search" class="form-control" name="q" value="{{ query }}" placeholder="Search company or role" aria-label="Search applications"></div>
+    <div class="col-sm-4 col-lg-3">
+        <select name="status" class="form-select" aria-label="Filter by status">
+            <option value="">All statuses</option>
+            {% for value, label in status_choices %}<option value="{{ value }}" {% if value == status %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+    </div>
+    <div class="col-auto"><button type="submit" class="btn btn-outline-primary">Filter</button></div>
+    <div class="col-auto ms-auto btn-group" role="group" aria-label="View">
+        <a class="btn btn-sm {% if view == 'table' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?view=table&q={{ query|urlencode }}&status={{ status }}"><i class="bi bi-table"></i> Table</a>
+        <a class="btn btn-sm {% if view == 'board' %}btn-primary{% else %}btn-outline-primary{% endif %}" href="?view=board&q={{ query|urlencode }}&status={{ status }}"><i class="bi bi-kanban"></i> Board</a>
+    </div>
+</form>
+
+{% if applications %}
+    {% if view == 'board' %}
+    <div class="board">
+        {% for column in columns %}
+        <section class="board-column" aria-label="{{ column.label }}">
+            <h3>{{ column.label }} <span>{{ column.items|length }}</span></h3>
+            {% for app in column.items %}
+            <div class="board-card">
+                <div class="fw-600">{{ app.company }}</div>
+                <div class="small text-muted mb-2">{{ app.role_title }}</div>
+                {% if app.next_step_date %}<div class="small mb-2"><i class="bi bi-calendar-event"></i> {{ app.next_step_date|date:"M j" }}{% if app.next_step %} &middot; {{ app.next_step }}{% endif %}</div>{% endif %}
+                <a class="small" href="{% url 'jscc-application-update' app.pk %}">Edit</a>
+            </div>
+            {% endfor %}
+        </section>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card"><div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead><tr><th>Company</th><th>Role</th><th>Status</th><th>Applied</th><th>Next step</th><th class="text-end">Actions</th></tr></thead>
+            <tbody>
+            {% for app in applications %}
+                <tr>
+                    <td class="fw-600">{% if app.job_url %}<a href="{{ app.job_url }}" target="_blank" rel="noopener">{{ app.company }}</a>{% else %}{{ app.company }}{% endif %}</td>
+                    <td>{{ app.role_title }}{% if app.location %}<div class="small text-muted">{{ app.location }}</div>{% endif %}</td>
+                    <td>{% include "components/status_badge.html" with value=app.status label=app.get_status_display %}</td>
+                    <td>{{ app.applied_on|date:"M j, Y"|default:"-" }}</td>
+                    <td>{% if app.next_step_date %}{{ app.next_step_date|date:"M j" }}{% if app.next_step %} &middot; {{ app.next_step }}{% endif %}{% else %}-{% endif %}</td>
+                    <td class="text-end text-nowrap">
+                        <a class="btn btn-sm btn-outline-primary" href="{% url 'jscc-application-update' app.pk %}">Edit</a>
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'jscc-application-delete' app.pk %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div></div>
+    {% endif %}
+{% else %}
+<div class="card">{% include "components/empty_state.html" with icon="briefcase" title="No applications found" text="Add an application, or clear your filters." %}</div>
+{% endif %}
+{% endblock %}

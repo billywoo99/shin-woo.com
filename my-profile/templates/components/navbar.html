@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg site-nav">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'profile-hello' %}">{{ SITE.name }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="siteNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link {% if nav_active == 'home' %}active{% endif %}" href="{% url 'profile-hello' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link {% if nav_active == 'experience' %}active{% endif %}" href="{% url 'experience' %}">Experience</a></li>
+                <li class="nav-item"><a class="nav-link {% if nav_active == 'projects' %}active{% endif %}" href="{% url 'projects' %}">Projects</a></li>
+                <li class="nav-item"><a class="nav-link {% if nav_active == 'case-studies' %}active{% endif %}" href="{% url 'case-study-list' %}">Case Studies</a></li>
+                <li class="nav-item"><a class="nav-link {% if nav_active == 'writing' %}active{% endif %}" href="{% url 'writing-list' %}">Writing</a></li>
+                <li class="nav-item"><a class="nav-link {% if nav_active == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a></li>
+                <li class="nav-item"><a class="nav-link {% if nav_active == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link {% if jscc_active %}active{% endif %}" href="{% url 'jscc-dashboard' %}"><i class="bi bi-speedometer2"></i> JSCC</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-circle"></i> {{ user.get_username }}</a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'password-change' %}">Change password</a></li>
+                        {% if user.is_staff %}<li><a class="dropdown-item" href="{% url 'admin:index' %}">Site admin</a></li>{% endif %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+                                <button type="submit" class="dropdown-item">Log out</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{# Centered single-card layout for login, register, password and profile-style pages. #}
+{% block layout %}
+<main class="body-content">
+    <div class="account-wrap">
+        <div class="brand">
+            <a href="{% url 'profile-hello' %}" class="h4 text-decoration-none">{{ SITE.name }}</a>
+        </div>
+        {% include "components/messages.html" %}
+        <div class="card">
+            {% block content %}{% endblock %}
+        </div>
+        {% block below_card %}{% endblock %}
+    </div>
+</main>
+{% endblock %}

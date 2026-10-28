@@ -1,0 +1,16 @@
+{% extends "base_jscc.html" %}
+{% block jscc_title %}{{ page_title }}{% endblock %}
+{# Shared by every JSCC create/edit screen. #}
+{% block content %}
+<h1 class="h2 mb-4">{{ page_title }}</h1>
+<div class="card" style="max-width: 44rem;">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% include "components/form_body.html" with form=form %}
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{{ cancel_url }}" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

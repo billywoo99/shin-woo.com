@@ -1,0 +1,163 @@
+import django.db.models.deletion
+import django.utils.timezone
+from django.conf import settings
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('my_profile', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='Project',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('title', models.CharField(max_length=120)),
+                ('slug', models.SlugField(blank=True, max_length=140, unique=True)),
+                ('client', models.CharField(blank=True, max_length=120)),
+                ('summary', models.CharField(max_length=300)),
+                ('description', models.TextField(blank=True)),
+                ('key_results', models.TextField(blank=True, help_text='One result per line.')),
+                ('tags', models.CharField(blank=True, help_text='Comma-separated, e.g. AWS, Agile, Migration.', max_length=200)),
+                ('url', models.URLField(blank=True)),
+                ('featured', models.BooleanField(default=False, help_text='Show on the Home page.')),
+                ('published', models.BooleanField(default=True)),
+                ('sort_order', models.PositiveIntegerField(default=0, help_text='Lower numbers appear first.')),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+            ],
+            options={'ordering': ['sort_order', '-created_at']},
+        ),
+        migrations.CreateModel(
+            name='CaseStudy',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('title', models.CharField(max_length=140)),
+                ('slug', models.SlugField(blank=True, max_length=140, unique=True)),
+                ('client', models.CharField(blank=True, max_length=120)),
+                ('role', models.CharField(blank=True, max_length=120)),
+                ('summary', models.CharField(max_length=300)),
+                ('challenge', models.TextField(blank=True)),
+                ('approach', models.TextField(blank=True)),
+                ('outcome', models.TextField(blank=True)),
+                ('results', models.TextField(blank=True, help_text='One headline result per line.')),
+                ('tags', models.CharField(blank=True, help_text='Comma-separated.', max_length=200)),
+                ('featured', models.BooleanField(default=False)),
+                ('published', models.BooleanField(default=True)),
+                ('sort_order', models.PositiveIntegerField(default=0)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+            ],
+            options={'ordering': ['sort_order', '-created_at'], 'verbose_name_plural': 'case studies'},
+        ),
+        migrations.CreateModel(
+            name='Post',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('title', models.CharField(max_length=160)),
+                ('slug', models.SlugField(blank=True, max_length=140, unique=True)),
+                ('excerpt', models.CharField(blank=True, max_length=300)),
+                ('body', models.TextField()),
+                ('tags', models.CharField(blank=True, help_text='Comma-separated.', max_length=200)),
+                ('featured', models.BooleanField(default=False, help_text='Pin to the top of Writing.')),
+                ('published', models.BooleanField(default=False)),
+                ('published_at', models.DateTimeField(default=django.utils.timezone.now)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+            ],
+            options={'ordering': ['-published_at']},
+        ),
+        migrations.CreateModel(
+            name='ContactMessage',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=100)),
+                ('email', models.EmailField(max_length=254)),
+                ('subject', models.CharField(blank=True, max_length=150)),
+                ('message', models.TextField()),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('is_read', models.BooleanField(default=False)),
+            ],
+            options={'ordering': ['-created_at']},
+        ),
+        migrations.CreateModel(
+            name='Application',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('company', models.CharField(max_length=150)),
+                ('role_title', models.CharField(max_length=150)),
+                ('status', models.CharField(choices=[('wishlist', 'Wishlist'), ('applied', 'Applied'), ('screening', 'Recruiter screen'), ('interview', 'Interviewing'), ('offer', 'Offer'), ('rejected', 'Rejected'), ('withdrawn', 'Withdrawn')], default='wishlist', max_length=20)),
+                ('location', models.CharField(blank=True, max_length=120)),
+                ('job_url', models.URLField(blank=True)),
+                ('salary_range', models.CharField(blank=True, max_length=80)),
+                ('source', models.CharField(blank=True, help_text='Where you found it, e.g. LinkedIn or a referral.', max_length=80)),
+                ('applied_on', models.DateField(blank=True, null=True)),
+                ('next_step', models.CharField(blank=True, max_length=200)),
+                ('next_step_date', models.DateField(blank=True, null=True)),
+                ('notes', models.TextField(blank=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={'ordering': ['-updated_at']},
+        ),
+        migrations.CreateModel(
+            name='NetworkContact',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=120)),
+                ('company', models.CharField(blank=True, max_length=150)),
+                ('title', models.CharField(blank=True, max_length=150)),
+                ('email', models.EmailField(blank=True, max_length=254)),
+                ('phone', models.CharField(blank=True, max_length=40)),
+                ('linkedin_url', models.URLField(blank=True)),
+                ('last_contacted', models.DateField(blank=True, null=True)),
+                ('follow_up_on', models.DateField(blank=True, null=True)),
+                ('notes', models.TextField(blank=True)),
+                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='network_contacts', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={'ordering': ['name']},
+        ),
+        migrations.CreateModel(
+            name='RoadmapItem',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('title', models.CharField(max_length=160)),
+                ('description', models.TextField(blank=True)),
+                ('phase', models.CharField(choices=[('now', 'Now'), ('next', 'Next'), ('later', 'Later')], default='now', max_length=10)),
+                ('status', models.CharField(choices=[('planned', 'Planned'), ('in_progress', 'In progress'), ('done', 'Done')], default='planned', max_length=12)),
+                ('target_date', models.DateField(blank=True, null=True)),
+                ('sort_order', models.PositiveIntegerField(default=0)),
+                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='roadmap_items', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={'ordering': ['sort_order', 'id']},
+        ),
+        migrations.CreateModel(
+            name='ChecklistItem',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('title', models.CharField(max_length=200)),
+                ('category', models.CharField(choices=[('resume', 'Resume'), ('linkedin', 'LinkedIn'), ('portfolio', 'Portfolio'), ('networking', 'Networking'), ('interview', 'Interview prep'), ('admin', 'Admin')], default='admin', max_length=20)),
+                ('is_done', models.BooleanField(default=False)),
+                ('completed_at', models.DateTimeField(blank=True, null=True)),
+                ('sort_order', models.PositiveIntegerField(default=0)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='checklist_items', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={'ordering': ['sort_order', 'id']},
+        ),
+        migrations.CreateModel(
+            name='UserSettings',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('target_role', models.CharField(blank=True, max_length=150)),
+                ('target_locations', models.CharField(blank=True, max_length=200)),
+                ('weekly_application_goal', models.PositiveSmallIntegerField(default=5)),
+                ('weekly_outreach_goal', models.PositiveSmallIntegerField(default=3)),
+                ('email_reminders', models.BooleanField(default=False)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='jscc_settings', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={'verbose_name_plural': 'user settings'},
+        ),
+    ]

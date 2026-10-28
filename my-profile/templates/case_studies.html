@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Case Studies - William Woo{% endblock %}
+{% block content %}
+{% include "components/page_header.html" with eyebrow="Deep dives" title="Case Studies" subtitle="How I framed the problem, led the work and measured the outcome." %}
+
+{% if case_studies %}
+<div class="row g-4">
+    {% for case_study in case_studies %}
+    <div class="col-md-6">{% include "components/case_study_card.html" with case_study=case_study %}</div>
+    {% endfor %}
+</div>
+{% else %}
+{% include "components/empty_state.html" with icon="journal-richtext" title="Case studies are coming soon" text="Check back shortly." %}
+{% endif %}
+{% endblock %}
